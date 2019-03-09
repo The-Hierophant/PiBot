@@ -149,7 +149,7 @@ io.on('connection', function(socket) {
         motor.right();
         break;
       case 'camleft':
-        dutyCycle = dutyCycle + 1.5 > max ? dutyCycle: dutyCycle + 1.5;
+        dutyCycle = dutyCycle + 1.5 > max ? dutyCycle: dutyCycle + 1.5;// TODO:modify the background here
         _moveCam(dutyCycle);
         break;
       case 'camright':

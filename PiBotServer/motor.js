@@ -11,6 +11,7 @@ var init = function () {
   }
 }
 
+// TODO:modify the background(motor) here
 var forward = function () {
   if (process.platform === 'linux') {
     rpio.write(29, rpio.LOW);

@@ -39,7 +39,7 @@ class Control extends React.Component {
   turnLeft() {
     socket.emit('direction', 'left');
   }
-  turnRight() {
+  turnRight() {f
     socket.emit('direction', 'right');
   }
   backward() {
@@ -49,7 +49,7 @@ class Control extends React.Component {
     socket.emit('direction', 'stop');
   }
   camTurnLeft() {
-    socket.emit('direction', 'camleft');
+    socket.emit('direction', 'camleft');// TODO:modify the control page here
   }
   camTurnRight() {
     socket.emit('direction', 'camright');
