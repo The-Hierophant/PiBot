@@ -39,7 +39,7 @@ class Control extends React.Component {
   turnLeft() {
     socket.emit('direction', 'left');
   }
-  turnRight() {f
+  turnRight() {
     socket.emit('direction', 'right');
   }
   backward() {
