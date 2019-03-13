@@ -3,3 +3,12 @@
 archive/
 node_modules/
 npm-debug.log
+.idea/PiBotServer.iml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+nginx/default - rtmp
+public/rtmp_test.html

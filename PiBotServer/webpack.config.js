@@ -1,5 +1,5 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -7,30 +7,30 @@ module.exports = {
   entry: [
     'script-loader!jquery/dist/jquery.min.js',
     'script-loader!foundation-sites/dist/js/foundation.min.js',
-    './app/app.jsx'
+    './app/app.jsx',
   ],
   externals: {
-    jquery: 'jQuery'
+    jquery: 'jQuery',
   },
   plugins: [
     new webpack.ProvidePlugin({
       '$': 'jquery',
-      'jQuery': 'jquery'
+      'jQuery': 'jquery',
     }),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
-        warnings: false
-      }
+        warnings: false,
+      },
     }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      }
-    })
+      },
+    }),
   ],
   output: {
     path: __dirname,
-    filename: './public/bundle.js'
+    filename: './public/bundle.js',
   },
   resolve: {
     modules: [
@@ -39,13 +39,13 @@ module.exports = {
       './app/components',
       './app/actions',
       './app/reducers',
-      './app/store'
+      './app/store',
     ],
     alias: {
       app: 'app',
-      applicationStyles: 'app/styles/app.scss'
+      applicationStyles: 'app/styles/app.scss',
     },
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -56,8 +56,8 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['react', 'es2015', 'es2017', 'stage-2'],
-          }
-        }
+          },
+        },
       },
       {
         test: /\.scss?$/,
@@ -65,16 +65,16 @@ module.exports = {
           loader: 'sass-loader',
           options: {
             includePaths: [
-              path.resolve(__dirname, './node_modules/foundation-sites/scss')
-            ]
-          }
-        }
+              path.resolve(__dirname, './node_modules/foundation-sites/scss'),
+            ],
+          },
+        },
       },
       {
         test: /\.(woff|ttf|eot)$/,
-        loader: 'url-loader?name=public/fonts/[name].[ext]'
-      }
-    ]
+        loader: 'url-loader?name=public/fonts/[name].[ext]',
+      },
+    ],
   },
-  devtool: process.env.NODE_ENV === 'production' ? undefined: 'cheap-module-eval-source-map'
+  devtool: process.env.NODE_ENV === 'production' ? undefined: 'cheap-module-eval-source-map',
 };

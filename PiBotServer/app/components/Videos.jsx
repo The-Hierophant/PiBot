@@ -1,17 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 class Videos extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    var {videos} = this.props;
-    var renderVideos = () => {
+    const {videos} = this.props;
+    const renderVideos = () => {
       if (videos.length > 0) {
         return videos.map((video) => {
-          var url = 'videos/' + video;
-          var name = video.split('.')[0];
+          const url = 'videos/' + video;
+          const name = video.split('.')[0];
           return (
             <div className="video__div" key={name}>
               <div>{name}</div>
@@ -20,17 +20,17 @@ class Videos extends React.Component {
               </video>
               <hr />
             </div>
-          )
+          );
         });
       } else {
-        return <div>No video available</div>
+        return <div>No video available</div>;
       }
-    }
-    return <div>{renderVideos()}</div>
+    };
+    return <div>{renderVideos()}</div>;
   }
 }
 
 export default connect(
-  (state) => {
-    return state;
-  })(Videos);
+    (state) => {
+      return state;
+    })(Videos);

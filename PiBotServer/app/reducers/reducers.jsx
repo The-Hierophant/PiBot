@@ -5,7 +5,7 @@ export var zoomReducer = (state = 100, action) => {
     default:
       return state;
   }
-}
+};
 
 export var videosReducer = (state = [], action) => {
   switch (action.type) {
@@ -14,4 +14,4 @@ export var videosReducer = (state = [], action) => {
     default:
       return state;
   }
-}
+};

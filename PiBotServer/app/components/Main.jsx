@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Hls from 'hls.js';
 import Record from 'Recorder';
 import Modal from 'react-modal';
@@ -17,29 +17,29 @@ const socket = io('');
 
 const style = {
   overlay: {
-    backgroundColor      : 'rgba(51, 51, 51, 0.5)'
+    backgroundColor: 'rgba(51, 51, 51, 0.5)',
   },
   content: {
-    border                : '0',
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '140vh',
-    height                : '80%'
-  }
-}
+    border: '0',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '140vh',
+    height: '80%',
+  },
+};
 
-//TODO: modify the page here
+// TODO: modify the page here
 class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       audioInput: false,
       control: false,
-      showModal: false
+      showModal: false,
     };
   }
   handleControl(e) {
@@ -50,33 +50,33 @@ class Main extends React.Component {
   }
   showVideos(e) {
     e.preventDefault();
-    this.setState({ showModal: true });
-    $("body").addClass("modal-open");
+    this.setState({showModal: true});
+    $('body').addClass('modal-open');
   }
-  handleCloseModal () {
-    this.setState({ showModal: false });
-    $("body").removeClass("modal-open");
+  handleCloseModal() {
+    this.setState({showModal: false});
+    $('body').removeClass('modal-open');
   }
   componentDidMount() {
-    var {dispatch} = this.props;
+    const {dispatch} = this.props;
     socket.emit('recordedVideos');
     socket.on('recordedVideos', (recordedVideos) => {
       dispatch(actions.setVideos(recordedVideos.reverse()));
     });
 
-    var video = this.refs.video;
-    if(Hls.isSupported()) {
-      var hls = new Hls();
-      var base = window.location.href;
+    const video = this.refs.video;
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      const base = window.location.href;
       hls.loadSource(base + 'hls/index.m3u8');
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED,function() {
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
         video.play();
       });
     }
   }
   render() {
-    var {zoomValue} = this.props;
+    const {zoomValue} = this.props;
     return (
       <div>
         <div className="text float__bottom bottom__left">
@@ -87,7 +87,9 @@ class Main extends React.Component {
           }
           {
             this.state.audioInput ?
-              <Record ref={instance => { this.child = instance; }} />
+              <Record ref={(instance) => {
+                this.child = instance;
+              }} />
             : <div></div>
           }
           <button className="success button user__button button__left" onClick={this.handleAudioInput.bind(this)}>
@@ -106,8 +108,8 @@ class Main extends React.Component {
             <Videos />
           </Modal>
           <video className="video" id="video" ref="video" style={{
-            width: zoomValue + "%",
-            height: zoomValue + "%"
+            width: zoomValue + '%',
+            height: zoomValue + '%',
           }}></video>
         </div>
       </div>
@@ -116,6 +118,6 @@ class Main extends React.Component {
 }
 
 export default connect(
-  (state) => {
-    return state;
-  })(Main);
+    (state) => {
+      return state;
+    })(Main);

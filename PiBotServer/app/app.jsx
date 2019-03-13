@@ -5,10 +5,10 @@ import {Provider} from 'react-redux';
 import * as actions from 'actions';
 import Main from 'Main';
 
-var store = require('configureStore').configure();
+const store = require('configureStore').configure();
 
 store.subscribe(() => {
-  var state = store.getState();
+  const state = store.getState();
 });
 
 // Load foundation
@@ -18,8 +18,8 @@ $(document).foundation();
 require('style-loader!css-loader!sass-loader!applicationStyles');
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Main />
-  </Provider>,
-  document.getElementById('app')
+    <Provider store={store}>
+      <Main />
+    </Provider>,
+    document.getElementById('app')
 );

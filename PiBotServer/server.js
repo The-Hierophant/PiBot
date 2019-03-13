@@ -1,16 +1,16 @@
-var async = require('async');
-var bodyParser = require('body-parser');
-var cors = require('cors');
-var exec = require('child_process').exec;
-var execSync = require('child_process').execSync;
-var spawn = require('child_process').spawn;
-var express = require('express');
-var fs = require('fs');
-var multer  = require('multer');
-var config = require('./config');
-var motor = require('./motor');
+const async = require('async');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
+const spawn = require('child_process').spawn;
+const express = require('express');
+const fs = require('fs');
+const multer = require('multer');
+const config = require('./config');
+const motor = require('./motor');
 
-console.log("Current platform: " + process.platform);
+console.log('Current platform: ' + process.platform);
 
 if (process.platform === 'linux') {
   var videDir = config.picamDir + 'rec/archive';
@@ -20,56 +20,56 @@ if (process.platform === 'linux') {
   var musicDir = './archive/music';
 }
 
-var app = express();
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
-app.use("/videos", express.static(videDir));
+app.use('/videos', express.static(videDir));
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '/tmp/')
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, '/tmp/');
   },
-  filename: function (req, file, cb) {
-    cb(null, 'audio')
-  }
+  filename: function(req, file, cb) {
+    cb(null, 'audio');
+  },
 });
 
-var upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
-var server = app.listen(config.PORT, function () {
+const server = app.listen(config.PORT, function() {
   console.log('Running on HTTP port: ' + config.PORT);
 });
 
-app.post('/audio', upload.any(), function (req, res) {
-  var cmd = 'avplay /tmp/audio';
+app.post('/audio', upload.any(), function(req, res) {
+  const cmd = 'avplay /tmp/audio';
   _execute(cmd);
   res.send('OK');
 });
 
-app.get('*', function (req, res) {
-  res.sendFile('public/index.html', { root: __dirname });
+app.get('*', function(req, res) {
+  res.sendFile('public/index.html', {root: __dirname});
 });
 
 // Servo
-const max = 11.5, min = 2.5;
-var dutyCycle = 7;
+const max = 11.5; const min = 2.5;
+let dutyCycle = 7;
 
-var music, musicProcess, recording;
+let music; let musicProcess; let recording;
 
 // Websocket
-var io = require('socket.io')(server);
+const io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
-  socket.on('disconnect', function () {
+  socket.on('disconnect', function() {
     if (recording) {
       _stopRecording();
     }
   });
 
   socket.on('ac', (msg) => {
-    if(msg === true) {
+    if (msg === true) {
       var cmd = config.baseDir + 'bin/on.out';
     } else {
       var cmd = config.baseDir + 'bin/off.out';
@@ -78,12 +78,12 @@ io.on('connection', function(socket) {
   });
 
   socket.on('fan', (msg) => {
-    var cmd = config.baseDir + 'bin/on.out';
+    const cmd = config.baseDir + 'bin/on.out';
     _execute(cmd);
   });
 
   socket.on('speaker', (msg) => {
-    var cmd = "amixer set 'Speaker',0 " + msg + '%';
+    const cmd = 'amixer set \'Speaker\',0 ' + msg + '%';
     _execute(cmd);
   });
 
@@ -110,7 +110,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('roomTemp', () => {
-    var res = '';
+    let res = '';
     if (process.platform === 'linux') {
       while (res.length === 0) {
         res = execSync('python ' + config.baseDir + 'bin/temp_hum/getTemp.py').toString().trim();
@@ -122,7 +122,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('roomHumidity', () => {
-    var res = '';
+    let res = '';
     if (process.platform === 'linux') {
       while (res.length === 0) {
         res = execSync('python ' + config.baseDir + 'bin/temp_hum/getHum.py').toString().trim();
@@ -156,6 +156,14 @@ io.on('connection', function(socket) {
         dutyCycle = dutyCycle - 1.5 < min ? dutyCycle: dutyCycle - 1.5;
         _moveCam(dutyCycle);
         break;
+      case 'camup':
+        dutyCycle = dutyCycle + 1.5 < min ? dutyCycle: dutyCycle + 1.5;
+        _moveCam(dutyCycle);
+        break;
+      case 'camdown':
+        dutyCycle = dutyCycle - 1.5 < min ? dutyCycle: dutyCycle - 1.5;
+        _moveCam(dutyCycle);
+        break;
       default:
         motor.stop();
     }
@@ -170,22 +178,22 @@ io.on('connection', function(socket) {
   });
 });
 
-var _execute = function (cmd) {
+var _execute = function(cmd) {
   console.log('Execute command: ' + cmd);
   exec(cmd,
-    (error, stdout, stderr) => {
+      (error, stdout, stderr) => {
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
         if (error !== null) {
-            console.log(`exec error: ${error}`);
+          console.log(`exec error: ${error}`);
         }
-  });
-}
+      });
+};
 
 var _moveCam = (dutyCycle) => {
-  var cmd = config.baseDir + 'bin/direct.py ' + dutyCycle;
+  const cmd = config.baseDir + 'bin/direct.py ' + dutyCycle;
   _execute(cmd);
-}
+};
 
 // Initialize servo to middle position
 if (process.platform == 'linux') {
@@ -195,47 +203,47 @@ if (process.platform == 'linux') {
 // Initialize motor output
 motor.init();
 
-var _startRecording = function () {
+var _startRecording = function() {
   recording = true;
-  var cmd = 'rm -rf ' + config.picamDir + 'hooks/*; rm -rf ' + config.picamDir + 'rec/archive/*.ts; rm -rf ' + config.picamDir + 'rec/*.ts';
+  let cmd = 'rm -rf ' + config.picamDir + 'hooks/*; rm -rf ' + config.picamDir + 'rec/archive/*.ts; rm -rf ' + config.picamDir + 'rec/*.ts';
   _execute(cmd);
-  cmd =  'touch ' + config.picamDir + 'hooks/start_record';
+  cmd = 'touch ' + config.picamDir + 'hooks/start_record';
   _execute(cmd);
-}
+};
 
-var _stopRecording = function () {
+var _stopRecording = function() {
   recording = false;
-  var cmd = 'touch ' + config.picamDir + 'hooks/stop_record';
+  let cmd = 'touch ' + config.picamDir + 'hooks/stop_record';
   _execute(cmd);
-  cmd = 'cd ' + videDir + "; VIDEO=`ls -r | grep .ts | head -n 1`; OUTFILE=`echo $VIDEO | cut -f1 -d'.'`; avconv -i $VIDEO -c:v copy -c:a copy -bsf:a aac_adtstoasc $OUTFILE.mp4";
+  cmd = 'cd ' + videDir + '; VIDEO=`ls -r | grep .ts | head -n 1`; OUTFILE=`echo $VIDEO | cut -f1 -d\'.\'`; avconv -i $VIDEO -c:v copy -c:a copy -bsf:a aac_adtstoasc $OUTFILE.mp4';
   _execute(cmd);
-  setTimeout(function () {
+  setTimeout(function() {
     _refreshVideos();
   }, 5*1000);
-}
+};
 
 var _stopMusic = () => {
   if (musicProcess) {
-    var cmd = 'kill ' + musicProcess.pid;
+    const cmd = 'kill ' + musicProcess.pid;
     _execute(cmd);
   }
-}
+};
 
 var _playMusic = (msg) => {
-  var filename = musicDir + msg;
-  musicProcess =  spawn('mpg123', [ filename ], {detached: true});
+  const filename = musicDir + msg;
+  musicProcess = spawn('mpg123', [filename], {detached: true});
   music = msg;
   console.log('mpg123 Process ID:' + musicProcess.pid);
-}
+};
 
 
-var _refreshVideos = function () {
+var _refreshVideos = function() {
   console.log(videDir);
-  fs.readdir(videDir, function (err, files) {
+  fs.readdir(videDir, function(err, files) {
     console.log(files);
-    var videos = [];
+    const videos = [];
     if (files) {
-      for (var i=0; i<files.length; i++) {
+      for (let i=0; i<files.length; i++) {
         if (files[i].indexOf('.mp4') !== -1) {
           videos.push(files[i]);
         }
@@ -243,15 +251,15 @@ var _refreshVideos = function () {
     }
     io.emit('recordedVideos', videos);
   });
-}
+};
 
-var _refreshMusicFiles = function () {
+var _refreshMusicFiles = function() {
   console.log(musicDir);
-  fs.readdir(musicDir, function (err, files) {
+  fs.readdir(musicDir, function(err, files) {
     console.log(files);
-    var music = [];
+    const music = [];
     if (files) {
-      for (var i=0; i<files.length; i++) {
+      for (let i=0; i<files.length; i++) {
         if (files[i].indexOf('.mp3') !== -1) {
           music.push(files[i]);
         }
@@ -259,4 +267,4 @@ var _refreshMusicFiles = function () {
     }
     io.emit('refreshMusicFiles', music);
   });
-}
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -20,14 +20,14 @@ class Control extends React.Component {
     super(props);
   }
   handleZoomOut() {
-    var {dispatch, zoomValue} = this.props;
+    let {dispatch, zoomValue} = this.props;
     if (zoomValue < 200) {
       zoomValue = zoomValue + 10;
       dispatch(actions.setZoomValue(zoomValue));
     }
   }
   handleZoomIn() {
-    var {dispatch, zoomValue} = this.props;
+    let {dispatch, zoomValue} = this.props;
     if (zoomValue > 50) {
       zoomValue = zoomValue - 10;
       dispatch(actions.setZoomValue(zoomValue));
@@ -48,38 +48,50 @@ class Control extends React.Component {
   stopCar() {
     socket.emit('direction', 'stop');
   }
+  camTurnUp() {
+    socket.emit('direction', 'camup');
+  }
   camTurnLeft() {
     socket.emit('direction', 'camleft');// TODO:modify the control page here
   }
   camTurnRight() {
     socket.emit('direction', 'camright');
   }
+  camTurnDown() {
+    socket.emit('direction', 'camdown');
+  }
   render() {
-    var {zoomValue} = this.props;
+    const {zoomValue} = this.props;
     return (
       <div className="fade__in">
         <div className="center__div row">
           <div className="control__left columns">
             <label>Bot</label>
             <h3 className="control">
-              <FaAngleDoubleUp className="direction" onMouseDown={this.forward.bind(this)} onMouseUp={this.stopCar.bind(this)} />
+              <FaAngleDoubleUp className="direction" onMouseDown={this.forward.bind(this)} onMouseUp={this.stopCar.bind(this)} /> //TODO: control pad here
             </h3>
             <h3 className="control">
-              <FaAngleDoubleLeft className="direction"  onMouseDown={this.turnLeft.bind(this)} onMouseUp={this.stopCar.bind(this)}/>
+              <FaAngleDoubleLeft className="direction" onMouseDown={this.turnLeft.bind(this)} onMouseUp={this.stopCar.bind(this)}/>
               <FaAngleDoubleUp className="placeholder" />
               <FaAngleDoubleRight className="direction" onMouseDown={this.turnRight.bind(this)} onMouseUp={this.stopCar.bind(this)}/>
             </h3>
             <h3 className="control">
-              <FaAngleDoubleDown className="direction"  onMouseDown={this.backward.bind(this)} onMouseUp={this.stopCar.bind(this)}/>
+              <FaAngleDoubleDown className="direction" onMouseDown={this.backward.bind(this)} onMouseUp={this.stopCar.bind(this)}/>
             </h3>
           </div>
           <div className="control__right columns">
             <label>Camera</label>
             <div>
               <h3 className="control">
-                <FaAngleDoubleLeft className="direction"  onMouseDown={this.camTurnLeft.bind(this)} />
+                <FaAngleDoubleUp className="direction" onMouseDown={this.camTurnUp.bind(this)} /> //TODO: control pad here
+              </h3>
+              <h3 className="control">
+                <FaAngleDoubleLeft className="direction" onMouseDown={this.camTurnLeft.bind(this)} />
                 <FaAngleDoubleUp className="placeholder" />
                 <FaAngleDoubleRight className="direction" onMouseDown={this.camTurnRight.bind(this)} />
+              </h3>
+              <h3 className="control">
+                <FaAngleDoubleDown className="direction" onMouseDown={this.camTurnDown.bind(this)}/>
               </h3>
             </div>
             <div className="zoom__div">
@@ -97,6 +109,6 @@ class Control extends React.Component {
 }
 
 export default connect(
-  (state) => {
-    return state;
-  })(Control);
+    (state) => {
+      return state;
+    })(Control);
