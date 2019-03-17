@@ -191,7 +191,7 @@ var _execute = function(cmd) {
 };
 
 var _moveCam = (dutyCycle) => {
-  const cmd = config.baseDir + 'bin/direct.py ' + dutyCycle;
+  const cmd = 'python ' + config.baseDir + 'bin/direct.py ' + dutyCycle;
   _execute(cmd);
 };
 

@@ -32,7 +32,7 @@ const style = {
   },
 };
 
-// TODO: modify the page here
+{/* TODO: modify the page here*/}
 class Main extends React.Component {
   constructor(props) {
     super(props);

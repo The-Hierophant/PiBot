@@ -52,7 +52,7 @@ class Control extends React.Component {
     socket.emit('direction', 'camup');
   }
   camTurnLeft() {
-    socket.emit('direction', 'camleft');// TODO:modify the control page here
+    socket.emit('direction', 'camleft');{/* TODO:modify the control page here*/}
   }
   camTurnRight() {
     socket.emit('direction', 'camright');
@@ -68,7 +68,7 @@ class Control extends React.Component {
           <div className="control__left columns">
             <label>Bot</label>
             <h3 className="control">
-              <FaAngleDoubleUp className="direction" onMouseDown={this.forward.bind(this)} onMouseUp={this.stopCar.bind(this)} /> //TODO: control pad here
+              <FaAngleDoubleUp className="direction" onMouseDown={this.forward.bind(this)} onMouseUp={this.stopCar.bind(this)} /> {/* TODO: control pad here*/}
             </h3>
             <h3 className="control">
               <FaAngleDoubleLeft className="direction" onMouseDown={this.turnLeft.bind(this)} onMouseUp={this.stopCar.bind(this)}/>
@@ -83,7 +83,7 @@ class Control extends React.Component {
             <label>Camera</label>
             <div>
               <h3 className="control">
-                <FaAngleDoubleUp className="direction" onMouseDown={this.camTurnUp.bind(this)} /> //TODO: control pad here
+                <FaAngleDoubleUp className="direction" onMouseDown={this.camTurnUp.bind(this)} /> {/* TODO: control pad here*/}
               </h3>
               <h3 className="control">
                 <FaAngleDoubleLeft className="direction" onMouseDown={this.camTurnLeft.bind(this)} />
