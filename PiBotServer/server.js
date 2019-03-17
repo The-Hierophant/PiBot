@@ -95,7 +95,7 @@ io.on('connection', function(socket) {
 
   socket.on('camera2', (msg) => {
     dutyCycle2 = (msg + max - min) / 2 + min;
-    _moveCam(dutyCycle2);
+    _moveCam2(dutyCycle2);
   });
   socket.on('music', (msg) => {
     _stopMusic();
