@@ -3,7 +3,7 @@
 基于https://github.com/shaqian/PiBot改写，改动如下：
 
 * 增加了对第二个舵机的控制
-* 将串流改为rtmp，延迟时间从3~5秒降至0.1~0.3秒
+* 将串流改为rtmp，延迟时间从3\~5秒降至0.1\~0.3秒
 * 删去了一些模块。
 
 树莓派视频遥控小车，带iOS和Android应用和网页应用。iOS 和 Android 客户端使用React Native，web端为 React，后台为 NodeJS，通信使用 websocket。
