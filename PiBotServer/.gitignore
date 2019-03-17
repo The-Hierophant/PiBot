@@ -12,3 +12,4 @@ npm-debug.log
 .idea/workspace.xml
 nginx/default - rtmp
 public/rtmp_test.html
+
