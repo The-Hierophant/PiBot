@@ -1,0 +1,4 @@
+cd ~/PiBot/PiBotServer
+sudo npm install --dev
+#webpack
+node_modules/.bin/webpack

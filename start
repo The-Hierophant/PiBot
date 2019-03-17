@@ -1,0 +1,8 @@
+cd ~/picam
+./make_dirs.sh
+./picam -o /run/shm/hls
+
+#cd ~/PiBotServer_test
+#node --inspect=192.168.137.210:9229 server.js
+cd ~/PiBot/PiBotServer
+sudo npm start
