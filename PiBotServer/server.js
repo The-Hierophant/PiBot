@@ -55,6 +55,7 @@ app.get('*', function(req, res) {
 // Servo
 const max = 11.5; const min = 2.5;
 let dutyCycle = 7;
+let dutyCycle2 = 7;
 
 let music; let musicProcess; let recording;
 
@@ -92,6 +93,10 @@ io.on('connection', function(socket) {
     _moveCam(dutyCycle);
   });
 
+  socket.on('camera2', (msg) => {
+    dutyCycle2 = (msg + max - min) / 2 + min;
+    _moveCam(dutyCycle2);
+  });
   socket.on('music', (msg) => {
     _stopMusic();
     if (music !== msg) {
@@ -157,12 +162,12 @@ io.on('connection', function(socket) {
         _moveCam(dutyCycle);
         break;
       case 'camup':
-        dutyCycle = dutyCycle + 1.5 < min ? dutyCycle: dutyCycle + 1.5;
-        _moveCam(dutyCycle);
+        dutyCycle2 = dutyCycle2 + 1.5 < min ? dutyCycle2: dutyCycle2 + 1.5;
+        _moveCam2(dutyCycle2);
         break;
       case 'camdown':
-        dutyCycle = dutyCycle - 1.5 < min ? dutyCycle: dutyCycle - 1.5;
-        _moveCam(dutyCycle);
+        dutyCycle2 = dutyCycle2 - 1.5 < min ? dutyCycle2: dutyCycle2 - 1.5;
+        _moveCam2(dutyCycle2);
         break;
       default:
         motor.stop();
@@ -195,9 +200,15 @@ var _moveCam = (dutyCycle) => {
   _execute(cmd);
 };
 
+var _moveCam2 = (dutyCycle2) => {
+  const cmd = 'python ' + config.baseDir + 'bin/direct_2.py ' + dutyCycle2;
+  _execute(cmd);
+};
+
 // Initialize servo to middle position
 if (process.platform == 'linux') {
   _moveCam(7);
+  _moveCam2(7);
 }
 
 // Initialize motor output

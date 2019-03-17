@@ -52,7 +52,7 @@ class Control extends React.Component {
     socket.emit('direction', 'camup');
   }
   camTurnLeft() {
-    socket.emit('direction', 'camleft');{/* TODO:modify the control page here*/}
+    socket.emit('direction', 'camleft'); {/* TODO:modify the control page here*/}
   }
   camTurnRight() {
     socket.emit('direction', 'camright');
